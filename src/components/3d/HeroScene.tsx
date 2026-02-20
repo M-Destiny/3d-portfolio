@@ -1,62 +1,64 @@
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Float, MeshTransmissionMaterial, Environment, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
 
-function WaveSphere() {
+function GlassOrb() {
   const meshRef = useRef<THREE.Mesh>(null)
   
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.15
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2
+      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15
     }
   })
 
   return (
-    <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.5}>
-      <mesh ref={meshRef} scale={2}>
-        <sphereGeometry args={[1, 128, 128]} />
+    <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.6}>
+      <mesh ref={meshRef} position={[0, 0, 0]} scale={2.5}>
+        <sphereGeometry args={[1, 64, 64]} />
         <MeshTransmissionMaterial 
-          distortion={0.5}
-          distortionScale={0.5}
-          temporalDistortion={0.1}
+          backside
+          samples={8}
           thickness={0.5}
-          roughness={0.1}
+          chromaticAberration={0.1}
+          anisotropy={0.3}
+          distortion={0.6}
+          distortionScale={0.6}
+          temporalDistortion={0.2}
+          iridescence={1}
+          iridescenceIOR={1}
+          iridescenceThicknessRange={[0, 1400]}
+          color="#c084fc"
           transmission={1}
-          chromaticAberration={0.06}
-          anisotropy={0.1}
-          color="#a855f7"
+          roughness={0}
         />
       </mesh>
     </Float>
   )
 }
 
-function BackgroundShapes() {
-  const shapes = Array.from({ length: 15 }, (_, idx) => ({
-    position: [
-      (Math.random() - 0.5) * 30,
-      (Math.random() - 0.5) * 20,
-      (Math.random() - 0.5) * 15 - 5
-    ] as [number, number, number],
-    scale: Math.random() * 0.5 + 0.2,
-    speed: Math.random() * 0.5 + 0.2,
-    color: idx % 2 === 0 ? '#06b6d4' : '#ec4899'
-  }))
+function FloatingShapes() {
+  const shapes = useMemo(() => {
+    return Array.from({ length: 8 }, (_, i) => ({
+      position: [
+        (Math.random() - 0.5) * 15,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 8 - 2
+      ] as [number, number, number],
+      scale: Math.random() * 0.4 + 0.2,
+      speed: Math.random() * 0.5 + 0.3,
+      color: ['#22d3ee', '#f472b6', '#a78bfa', '#34d399'][i % 4]
+    }))
+  }, [])
 
   return (
     <>
       {shapes.map((shape, i) => (
-        <Float key={i} speed={shape.speed} rotationIntensity={0.5} floatIntensity={0.5}>
+        <Float key={i} speed={shape.speed} rotationIntensity={1} floatIntensity={1}>
           <mesh position={shape.position} scale={shape.scale}>
-            <icosahedronGeometry args={[1, 0]} />
-            <meshStandardMaterial 
-              color={shape.color} 
-              wireframe 
-              transparent 
-              opacity={0.3} 
-            />
+            <octahedronGeometry args={[1, 0]} />
+            <meshStandardMaterial color={shape.color} wireframe opacity={0.7} transparent />
           </mesh>
         </Float>
       ))}
@@ -64,48 +66,26 @@ function BackgroundShapes() {
   )
 }
 
-function Particles() {
-  const count = 200
-  const positions = new Float32Array(count * 3)
-  
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 40
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 40
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 40
-  }
-
-  return (
-    <points>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial size={0.04} color="#a855f7" transparent opacity={0.6} />
-    </points>
-  )
-}
-
 function Scene() {
   return (
     <>
-      <ambientLight intensity={0.2} />
-      <pointLight position={[10, 10, 10]} intensity={1} color="#a855f7" />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#06b6d4" />
-      <pointLight position={[0, 0, 10]} intensity={0.8} color="#ec4899" />
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[10, 10, 5]} intensity={1} color="#ffffff" />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#c084fc" />
+      <pointLight position={[10, -10, 10]} intensity={0.5} color="#22d3ee" />
       
-      <WaveSphere />
-      <BackgroundShapes />
-      <Particles />
-      <Sparkles count={100} scale={20} size={2} speed={0.5} color="#a855f7" />
-      <Environment preset="night" />
-      <fog attach="fog" args={['#050505', 5, 25]} />
+      <GlassOrb />
+      <FloatingShapes />
+      <Sparkles count={150} scale={25} size={3} speed={0.4} color="#c084fc" />
+      <Environment preset="city" />
     </>
   )
 }
 
 export default function Hero3D() {
   return (
-    <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 8], fov: 50 }} gl={{ antialias: true }}>
+    <div className="fixed inset-0 -z-10 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
+      <Canvas camera={{ position: [0, 0, 6], fov: 45 }} gl={{ antialias: true, alpha: true }}>
         <Scene />
       </Canvas>
     </div>

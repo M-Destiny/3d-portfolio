@@ -18,8 +18,8 @@ export default function App() {
   const [loaded, setLoaded] = useState(false)
   const { scrollY } = useScroll()
   
-  const heroOpacity = useTransform(scrollY, [0, 500], [1, 0])
-  const heroY = useTransform(scrollY, [0, 500], [0, -100])
+  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0])
+  const heroY = useTransform(scrollY, [0, 600], [0, -150])
 
   useEffect(() => {
     fetch('https://api.github.com/users/M-Destiny/repos?sort=updated&per_page=12')
@@ -41,251 +41,344 @@ export default function App() {
   }
 
   return (
-    <div className="bg-black text-white">
-      {/* Navigation - Apple style: minimal, transparent */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center bg-black/80 backdrop-blur-md">
-        <button onClick={() => scrollTo('home')} className="text-lg font-semibold tracking-tight">
+    <div className="bg-neutral-950 text-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex justify-between items-center bg-black/60 backdrop-blur-xl border-b border-white/5">
+        <button onClick={() => scrollTo('home')} className="text-xl font-bold tracking-tight">
           Mehul
         </button>
-        <div className="flex gap-8 text-sm">
+        <div className="hidden md:flex gap-10 text-sm">
           {['About', 'Work', 'Skills', 'Contact'].map(item => (
             <button key={item} onClick={() => scrollTo(item.toLowerCase())} 
-              className="text-gray-400 hover:text-white transition-colors text-sm">
+              className="text-gray-400 hover:text-white transition-colors text-sm font-medium">
               {item}
             </button>
           ))}
         </div>
       </nav>
 
-      {/* Hero - Full screen, centered, minimal */}
-      <section id="home" className="h-screen relative flex items-center justify-center">
+      {/* SECTION 1: HERO - Full screen */}
+      <section id="home" className="h-screen relative flex items-center justify-center overflow-hidden">
         <Hero3D />
         
         <motion.div 
           style={{ opacity: heroOpacity, y: heroY }}
-          className="relative z-10 text-center px-4"
+          className="relative z-10 text-center px-6"
         >
-          <motion.p 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-gray-400 text-sm mb-4"
+            transition={{ duration: 1 }}
+            className="mb-6"
           >
-            Full Stack Developer
-          </motion.p>
+            <span className="text-gray-500 text-lg tracking-widest uppercase">Full Stack Developer</span>
+          </motion.div>
           
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-7xl md:text-9xl font-semibold tracking-tight mb-6"
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-[12vw] leading-none font-bold tracking-tighter mb-2"
           >
-            Hello, I'm Mehul
+            Hello,
           </motion.h1>
           
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
+          <motion.h2 
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-400 max-w-xl mx-auto mb-10"
+            transition={{ duration: 1, delay: 0.4 }}
+            className="text-[12vw] leading-none font-bold tracking-tighter mb-6"
           >
-            Creating extraordinary digital experiences with code
-          </motion.p>
+            I'm Mehul
+          </motion.h2>
           
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 1, delay: 0.6 }}
             className="flex justify-center gap-4"
           >
             <button onClick={() => scrollTo('work')}
-              className="px-8 py-3 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors">
-              View Work
+              className="px-10 py-4 bg-white text-black font-semibold rounded-full hover:scale-105 transition-transform">
+              View My Work
             </button>
             <button onClick={() => scrollTo('contact')}
-              className="px-8 py-3 text-gray-400 hover:text-white transition-colors">
-              Contact
+              className="px-10 py-4 border border-white/20 rounded-full hover:bg-white/10 transition-colors">
+              Contact Me
             </button>
           </motion.div>
         </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div 
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2"
+        >
+          <div className="w-8 h-14 rounded-full border-2 border-white/20 flex justify-center pt-3">
+            <motion.div 
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-1.5 h-3 bg-white/60 rounded-full"
+            />
+          </div>
+        </motion.div>
       </section>
 
-      {/* About - Large text, minimal */}
-      <section id="about" className="min-h-[80vh] flex items-center py-32 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.p 
+      {/* SECTION 2: ABOUT - Full screen */}
+      <section id="about" className="min-h-screen flex items-center py-32 px-8 bg-gradient-to-b from-neutral-950 via-purple-950/10 to-neutral-950">
+        <div className="max-w-6xl mx-auto w-full">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="text-gray-500 text-sm mb-8"
+            viewport={{ once: true }}
+            className="text-center mb-20"
           >
-            ABOUT
-          </motion.p>
-          
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-semibold leading-tight mb-12"
-          >
-            I build software that <span className="text-blue-500">inspires</span>.
-          </motion.h2>
+            <p className="text-gray-500 tracking-[0.3em] uppercase text-sm mb-6">About Me</p>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8">
+              Building
+            </h2>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                Extraordinary
+              </span>
+            </h2>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter">
+              Experiences
+            </h2>
+          </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="grid md:grid-cols-3 gap-12"
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <p className="text-gray-400 text-xl md:text-2xl leading-relaxed mb-16">
+              I'm a passionate developer who creates stunning digital experiences. 
+              From immersive 3D websites to powerful backend systems, I bring ideas to life with code.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-3 gap-8 max-w-2xl mx-auto"
           >
             {[
               { num: '15+', label: 'Projects' },
-              { num: '3+', label: 'Years' },
-              { num: '10+', label: 'Technologies' },
+              { num: '3+', label: 'Years Exp' },
+              { num: '10+', label: 'Tech Stack' },
             ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="text-5xl font-semibold text-blue-500 mb-2">{stat.num}</div>
-                <div className="text-gray-500">{stat.label}</div>
+              <div key={i} className="text-center p-8 bg-white/5 rounded-3xl border border-white/10">
+                <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 mb-2">
+                  {stat.num}
+                </div>
+                <div className="text-gray-500 font-medium">{stat.label}</div>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Work - Apple style grid */}
-      <section id="work" className="min-h-screen py-32 px-6 bg-gray-950">
-        <div className="max-w-6xl mx-auto">
-          <motion.p 
+      {/* SECTION 3: WORK - Full screen */}
+      <section id="work" className="min-h-screen py-32 px-8 bg-neutral-950">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="text-gray-500 text-sm mb-12"
+            viewport={{ once: true }}
+            className="mb-20"
           >
-            SELECTED WORK
-          </motion.p>
+            <p className="text-gray-500 tracking-[0.3em] uppercase text-sm mb-6">Selected Work</p>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter">
+              Featured
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                Projects
+              </span>
+            </h2>
+          </motion.div>
 
           {!loaded ? (
-            <div className="flex justify-center py-20">
-              <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            <div className="flex justify-center py-32">
+              <div className="w-10 h-10 border-3 border-purple-500 border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8">
               {repos.slice(0, 6).map((repo, i) => (
                 <motion.a
                   key={repo.id}
                   href={repo.html_url}
                   target="_blank"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="group p-8 bg-black rounded-3xl border border-gray-900 hover:border-gray-800 transition-all"
+                  whileHover={{ y: -8, scale: 1.01 }}
+                  className="group p-10 bg-neutral-900 rounded-3xl border border-white/10 hover:border-purple-500/50 transition-all duration-500"
                 >
-                  <h3 className="text-2xl font-semibold mb-3 group-hover:text-blue-500 transition-colors">
-                    {repo.name}
-                  </h3>
-                  <p className="text-gray-500 mb-6">
-                    {repo.description || 'No description'}
+                  <div className="flex justify-between items-start mb-6">
+                    <h3 className="text-2xl font-bold group-hover:text-purple-400 transition-colors">
+                      {repo.name}
+                    </h3>
+                    <span className="text-yellow-500">⭐ {repo.stargazers_count}</span>
+                  </div>
+                  <p className="text-gray-500 mb-8 line-clamp-3 min-h-[4rem]">
+                    {repo.description || 'No description available.'}
                   </p>
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-3">
                     {repo.language && (
-                      <span className="flex items-center gap-2 text-gray-400">
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: getLangColor(repo.language) }} />
-                        {repo.language}
-                      </span>
+                      <>
+                        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: getLangColor(repo.language) }} />
+                        <span className="text-gray-400 text-sm">{repo.language}</span>
+                      </>
                     )}
-                    <span className="text-gray-600">⭐ {repo.stargazers_count}</span>
                   </div>
                 </motion.a>
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Skills - Simple list */}
-      <section id="skills" className="min-h-[60vh] flex items-center py-32 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-gray-500 text-sm mb-12"
-          >
-            SKILLS
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="grid md:grid-cols-3 gap-12"
-          >
-            {[
-              { title: 'Frontend', skills: 'React, TypeScript, Three.js, Tailwind' },
-              { title: 'Backend', skills: 'Node.js, Python, PostgreSQL, Socket.io' },
-              { title: 'Tools', skills: 'Git, Docker, AWS, Vercel' },
-            ].map((cat, i) => (
-              <div key={i}>
-                <h3 className="text-xl font-semibold mb-4">{cat.title}</h3>
-                <p className="text-gray-500">{cat.skills}</p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Contact - Clean CTA */}
-      <section id="contact" className="min-h-[50vh] flex items-center justify-center py-32 px-6 bg-gray-950">
-        <div className="text-center">
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-gray-500 text-sm mb-6"
-          >
-            GET IN TOUCH
-          </motion.p>
-          
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-semibold mb-8"
-          >
-            Let's work together
-          </motion.h2>
-          
-          <motion.a 
-            href="mailto:mehulr2801@gmail.com"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="inline-block px-10 py-4 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors"
-          >
-            Say Hello
-          </motion.a>
           
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="flex justify-center gap-8 mt-12"
+            viewport={{ once: true }}
+            className="text-center mt-16"
           >
-            {['GitHub', 'LinkedIn', 'Email'].map(social => (
-              <a
-                key={social}
-                href={social === 'GitHub' ? 'https://github.com/M-Destiny' : social === 'LinkedIn' ? 'https://linkedin.com/in/destinymehul' : 'mailto:mehulr2801@gmail.com'}
-                target="_blank"
-                className="text-gray-500 hover:text-white transition-colors"
-              >
-                {social}
-              </a>
-            ))}
+            <a 
+              href="https://github.com/M-Destiny"
+              target="_blank"
+              className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 text-lg"
+            >
+              View all projects on GitHub 
+              <span>→</span>
+            </a>
           </motion.div>
         </div>
       </section>
 
-      {/* Footer - Minimal */}
-      <footer className="py-8 px-6 border-t border-gray-900">
+      {/* SECTION 4: SKILLS - Full screen */}
+      <section id="skills" className="min-h-screen flex items-center py-32 px-8 bg-gradient-to-b from-neutral-950 via-indigo-950/10 to-neutral-950">
+        <div className="max-w-6xl mx-auto w-full">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="mb-20"
+          >
+            <p className="text-gray-500 tracking-[0.3em] uppercase text-sm mb-6">Expertise</p>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter">
+              Skills &
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400">
+                Technologies
+              </span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { 
+                title: 'Frontend', 
+                icon: '⚡',
+                gradient: 'from-indigo-500 to-cyan-500',
+                skills: ['React', 'TypeScript', 'Three.js', 'Framer Motion', 'Tailwind CSS', 'Next.js']
+              },
+              { 
+                title: 'Backend', 
+                icon: '🔧',
+                gradient: 'from-purple-500 to-pink-500',
+                skills: ['Node.js', 'Python', 'PostgreSQL', 'Socket.io', 'REST APIs', 'GraphQL']
+              },
+              { 
+                title: 'Tools', 
+                icon: '🛠️',
+                gradient: 'from-green-500 to-cyan-500',
+                skills: ['Git', 'Docker', 'AWS', 'Vercel', 'Figma', 'Linux']
+              }
+            ].map((cat, i) => (
+              <motion.div
+                key={cat.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15 }}
+                whileHover={{ y: -5 }}
+                className="p-10 bg-neutral-900 rounded-3xl border border-white/10 hover:border-white/20 transition-all"
+              >
+                <div className="text-5xl mb-6">{cat.icon}</div>
+                <h3 className="text-3xl font-bold mb-6">{cat.title}</h3>
+                <div className="flex flex-wrap gap-3">
+                  {cat.skills.map(skill => (
+                    <span 
+                      key={skill} 
+                      className={`px-5 py-2.5 bg-gradient-to-r ${cat.gradient} bg-opacity-10 rounded-full text-sm font-medium text-gray-300 border border-white/5`}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: CONTACT - Full screen */}
+      <section id="contact" className="min-h-[80vh] flex items-center justify-center py-32 px-8 bg-gradient-to-b from-neutral-950 via-purple-950/10 to-neutral-950">
+        <div className="text-center max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-gray-500 tracking-[0.3em] uppercase text-sm mb-6">Get In Touch</p>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8">
+              Let's
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                Collaborate
+              </span>
+            </h2>
+            <p className="text-gray-400 text-xl mb-12 max-w-xl mx-auto">
+              Have a project in mind or want to work together? I'd love to hear from you.
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
+              {[
+                { name: 'GitHub', url: 'https://github.com/M-Destiny' },
+                { name: 'LinkedIn', url: 'https://linkedin.com/in/destinymehul' },
+                { name: 'Email', url: 'mailto:mehulr2801@gmail.com' }
+              ].map(social => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  className="px-8 py-4 border border-white/20 rounded-full hover:bg-white/10 hover:border-purple-500/50 transition-all"
+                >
+                  {social.name}
+                </a>
+              ))}
+            </div>
+            
+            <a 
+              href="mailto:mehulr2801@gmail.com"
+              className="inline-block px-16 py-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-xl rounded-full hover:scale-105 transition-transform shadow-lg shadow-purple-500/25"
+            >
+              Say Hello 👋
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-10 px-8 border-t border-white/10 bg-neutral-950">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-600 text-sm">
-            © {new Date().getFullYear()} Mehul
+          <p className="text-gray-600">
+            © {new Date().getFullYear()} Mehul. All rights reserved.
           </p>
-          <p className="text-gray-600 text-sm">
-            Built with React
+          <p className="text-gray-700 text-sm">
+            Built with React & Three.js
           </p>
         </div>
       </footer>

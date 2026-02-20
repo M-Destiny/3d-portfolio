@@ -13,6 +13,22 @@ interface Repo {
   fork: boolean
 }
 
+function ParallaxBackground() {
+  const { scrollY } = useScroll()
+  
+  const y1 = useTransform(scrollY, [0, 1000], [0, -150])
+  const y2 = useTransform(scrollY, [0, 1000], [0, 150])
+  const y3 = useTransform(scrollY, [0, 1000], [0, -100])
+
+  return (
+    <div className="parallax-bg">
+      <motion.div style={{ y: y1 }} className="parallax-bg__circle parallax-bg__circle--1" />
+      <motion.div style={{ y: y2 }} className="parallax-bg__circle parallax-bg__circle--2" />
+      <motion.div style={{ y: y3 }} className="parallax-bg__circle parallax-bg__circle--3" />
+    </div>
+  )
+}
+
 function Header() {
   return (
     <header className="header">
@@ -128,6 +144,19 @@ function Projects({ repos }: { repos: Repo[] }) {
     '3d-portfolio': 'https://3d-portfolio-ebon-rho.vercel.app',
     'mini-games-hub': 'https://mini-games-hub-rouge.vercel.app',
     'OmniTools': 'https://omni-tools.vercel.app',
+    'json-deduplicator': 'https://json-deduplicator.vercel.app',
+    'minesweeper-clawe': 'https://minesweeper-clawe.vercel.app',
+  }
+
+  const getProjectIcon = (name: string) => {
+    const icons: Record<string, string> = {
+      '3d-portfolio': '🎨',
+      'mini-games-hub': '🎮',
+      'OmniTools': '🛠️',
+      'json-deduplicator': '📋',
+      'minesweeper-clawe': '💣',
+    }
+    return icons[name] || '📦'
   }
 
   const reposWithHomepage = repos.map(repo => ({
@@ -143,32 +172,45 @@ function Projects({ repos }: { repos: Repo[] }) {
           <h2 className="section__title">Selected Work</h2>
         </div>
 
-        <div className="projects__grid">
-          {reposWithHomepage.slice(0, 9).map((repo) => (
-            <a
-              key={repo.id}
-              href={repo.homepage || repo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-card"
-            >
-              <div className="project-card__preview">
-                {repo.homepage ? (
-                  <iframe 
-                    src={repo.homepage}
-                    title={repo.name}
-                  />
-                ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#404040', fontSize: '2rem' }}>
-                    📁
-                  </div>
-                )}
+        <div className="projects__list">
+          {reposWithHomepage.slice(0, 8).map((repo) => (
+            <div key={repo.id} className="project-item">
+              <div className="project-item__icon">
+                {getProjectIcon(repo.name)}
               </div>
-              <h3 className="project-card__title">{repo.name}</h3>
-              <p className="project-card__desc">
-                {repo.description || 'No description'}
-              </p>
-            </a>
+              <div className="project-item__content">
+                <h3 className="project-item__title">{repo.name}</h3>
+                <p className="project-item__desc">
+                  {repo.description || 'No description available for this project.'}
+                </p>
+                <div className="project-item__buttons">
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-item__btn project-item__btn--github"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    GitHub
+                  </a>
+                  {repo.homepage && (
+                    <a
+                      href={repo.homepage}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-item__btn project-item__btn--live"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                      </svg>
+                      Live
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -238,6 +280,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <ParallaxBackground />
       <Header />
       <Hero />
       <About />

@@ -1,15 +1,19 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Float, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
 
-function FloatingTorus() {
+function FloatingTorus({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const meshRef = useRef<THREE.Mesh>(null)
   
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.x = state.clock.elapsedTime * 0.3
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.2
+      
+      // Follow mouse with slight delay
+      meshRef.current.position.x += (mousePosition.x * 0.5 - meshRef.current.position.x) * 0.02
+      meshRef.current.position.y += (mousePosition.y * 0.3 - meshRef.current.position.y) * 0.02
     }
   })
 
@@ -23,13 +27,17 @@ function FloatingTorus() {
   )
 }
 
-function FloatingIcosahedron() {
+function FloatingIcosahedron({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const meshRef = useRef<THREE.Mesh>(null)
   
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.x = state.clock.elapsedTime * 0.2
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.4
+      
+      // Follow mouse opposite
+      meshRef.current.position.x += (-mousePosition.x * 0.3 - meshRef.current.position.x) * 0.02
+      meshRef.current.position.y += (-mousePosition.y * 0.4 - meshRef.current.position.y) * 0.02
     }
   })
 
@@ -43,13 +51,16 @@ function FloatingIcosahedron() {
   )
 }
 
-function FloatingOctahedron() {
+function FloatingOctahedron({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const meshRef = useRef<THREE.Mesh>(null)
   
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.x = state.clock.elapsedTime * 0.25
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.35
+      
+      // Follow mouse
+      meshRef.current.position.x += (mousePosition.x * 0.2 - meshRef.current.position.x) * 0.03
     }
   })
 
@@ -63,13 +74,16 @@ function FloatingOctahedron() {
   )
 }
 
-function FloatingDodecahedron() {
+function FloatingDodecahedron({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const meshRef = useRef<THREE.Mesh>(null)
   
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.x = state.clock.elapsedTime * 0.18
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.28
+      
+      // Follow mouse
+      meshRef.current.position.y += (mousePosition.y * 0.25 - meshRef.current.position.y) * 0.02
     }
   })
 
@@ -96,30 +110,39 @@ function Particles() {
   )
 }
 
-function Scene() {
+function Scene({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   return (
     <>
       <ambientLight intensity={1} />
       <pointLight position={[10, 10, 10]} intensity={0.15} color="#ffffff" />
       <pointLight position={[-10, -10, -10]} intensity={0.1} color="#6366f1" />
       
-      <FloatingTorus />
-      <FloatingIcosahedron />
-      <FloatingOctahedron />
-      <FloatingDodecahedron />
+      <FloatingTorus mousePosition={mousePosition} />
+      <FloatingIcosahedron mousePosition={mousePosition} />
+      <FloatingOctahedron mousePosition={mousePosition} />
+      <FloatingDodecahedron mousePosition={mousePosition} />
       <Particles />
     </>
   )
 }
 
 export default function Hero3D() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  
+  const handleMouseMove = (event: React.MouseEvent) => {
+    // Normalize mouse position to -1 to 1
+    const x = (event.clientX / window.innerWidth) * 2 - 1
+    const y = -(event.clientY / window.innerHeight) * 2 + 1
+    setMousePosition({ x, y })
+  }
+
   return (
-    <div className="canvas-container">
+    <div className="canvas-container" onMouseMove={handleMouseMove}>
       <Canvas 
         camera={{ position: [0, 0, 5], fov: 55 }} 
         gl={{ antialias: true, alpha: true }}
       >
-        <Scene />
+        <Scene mousePosition={mousePosition} />
       </Canvas>
     </div>
   )

@@ -1,73 +1,85 @@
-# React + TypeScript + Vite
+# 🚀 3D Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, fully responsive 3D portfolio website built with modern WebGL technologies.
 
-Currently, two official plugins are available:
+![3D Portfolio](https://img.shields.io/badge/Made%20with-React%20Three%20Fiber-purple)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- **Immersive 3D Hero** - Animated floating shapes with React Three Fiber
+- **Interactive Skills** - 3D constellation visualization with orbit controls
+- **Dynamic Projects** - Auto-fetched from GitHub API
+- **Experience Timeline** - Animated scroll-triggered transitions
+- **Responsive Design** - Mobile-first, works on all devices
+- **Performance Optimized** - Lazy loading, code splitting, 60fps target
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework:** React + TypeScript + Vite
+- **3D:** Three.js, React Three Fiber, @react-three/drei
+- **Animation:** Framer Motion
+- **Styling:** Tailwind CSS (custom)
+- **Deployment:** Vercel
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Live Demo
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Production:** https://3d-portfolio-ebon-rho.vercel.app
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🏗️ Architecture
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/       # React components
+│   ├── Hero.tsx     # 3D hero section
+│   ├── Skills.tsx   # 3D skills constellation
+│   ├── Projects.tsx # GitHub repos display
+│   ├── Experience.tsx # Timeline
+│   ├── Contact.tsx  # CTA & social links
+│   └── Navigation.tsx # Navbar
+├── hooks/           # Custom hooks
+│   └── useGitHubRepos.ts # GitHub API
+├── data/            # Static data
+│   └── profile.ts   # Profile config
+├── types/           # TypeScript types
+└── App.tsx          # Main app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔧 Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Install dependencies
+npm install
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Development
+npm run dev
+
+# Build
+npm run build
 ```
+
+## 🌿 Branches
+
+- `main` - Production
+- `dev` - Development
+- `feature/*` - Feature branches
+
+## 📡 GitHub Integration
+
+Projects are automatically fetched from GitHub API. Any public repository will appear on the portfolio.
+
+### Manual Sync
+
+The portfolio fetches repositories client-side. For auto-sync, you can set up GitHub Actions to rebuild on schedule.
+
+## 🔐 Environment Variables
+
+Not required - uses public GitHub API.
+
+## 📝 License
+
+MIT
+
+---
+
+Built with 💜 using React Three Fiber

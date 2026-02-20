@@ -1,26 +1,7 @@
-@import "tailwindcss";
+/* Import main styles */
+@import './styles.css';
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #fff;
-  color: #000;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
+/* Fallback */
+#root {
+  width: 100%;
 }

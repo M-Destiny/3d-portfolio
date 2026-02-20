@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import Hero3D from './components/3d/HeroScene'
+import './styles.css'
 
 interface Repo {
   id: number
@@ -8,24 +10,16 @@ interface Repo {
   html_url: string
   homepage: string
   stargazers_count: number
-  forks_count: number
-  language: string
   fork: boolean
 }
 
 function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center bg-white/90 backdrop-blur-sm border-b border-gray-100">
-      <a href="#home" className="text-lg font-bold tracking-tight hover:text-gray-600 transition-colors">
-        MEHUL
-      </a>
-      <nav className="flex gap-8">
+    <header className="header">
+      <a href="#home" className="header__logo">MEHUL</a>
+      <nav className="header__nav">
         {['About', 'Projects', 'Contact'].map((item) => (
-          <a 
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            className="text-sm text-gray-500 hover:text-black transition-colors"
-          >
+          <a key={item} href={`#${item.toLowerCase()}`} className="header__link">
             {item}
           </a>
         ))}
@@ -36,57 +30,93 @@ function Header() {
 
 function Hero() {
   const { scrollY } = useScroll()
-  const opacity = useTransform(scrollY, [0, 300], [1, 0])
+  const opacity = useTransform(scrollY, [0, 400], [1, 0])
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center px-8 py-32">
+    <section id="home" className="hero">
+      <Hero3D />
+      
       <motion.div 
         style={{ opacity }}
-        className="text-center max-w-2xl mx-auto"
+        className="hero__content"
       >
-        <p className="text-sm text-gray-500 uppercase tracking-widest mb-4">Full Stack Developer</p>
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-          Hello, I'm Mehul
-        </h1>
-        <p className="text-gray-600 text-lg mb-10 max-w-lg mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="hero__badge">Full Stack Developer</span>
+        </motion.div>
+        
+        <motion.h1 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="hero__title"
+        >
+          Hello, I'm <span>Mehul</span>
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="hero__subtitle"
+        >
           I build beautiful, functional digital experiences
-        </p>
-        <div className="flex gap-4 justify-center">
-          <a href="#projects" className="px-8 py-3 bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-colors">
-            View Work
-          </a>
-          <a href="#contact" className="px-8 py-3 border border-gray-300 rounded-full hover:border-black transition-colors">
-            Contact
-          </a>
-        </div>
+        </motion.p>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="hero__buttons"
+        >
+          <a href="#projects" className="btn btn--primary">View Work</a>
+          <a href="#contact" className="btn btn--secondary">Contact</a>
+        </motion.div>
       </motion.div>
+
+      <div className="scroll-indicator">
+        <div className="scroll-indicator__box">
+          <div className="scroll-indicator__dot" />
+        </div>
+      </div>
     </section>
   )
 }
 
 function About() {
   return (
-    <section id="about" className="py-32 px-8 bg-gray-50">
-      <div className="max-w-3xl mx-auto text-center">
-        <p className="text-sm text-gray-500 uppercase tracking-widest mb-4">About</p>
-        <h2 className="text-3xl md:text-4xl font-bold mb-8">
-          I create digital experiences that matter
-        </h2>
-        <p className="text-gray-600 leading-relaxed text-lg">
-          Full-stack developer passionate about building immersive web experiences. 
-          From 3D websites to real-time applications, I bring ideas to life with clean code and thoughtful design.
-        </p>
-        <div className="flex justify-center gap-12 mt-12">
-          {[
-            { num: '15+', label: 'Projects' },
-            { num: '3+', label: 'Years' },
-            { num: '10+', label: 'Tech' },
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-3xl font-bold">{stat.num}</div>
-              <div className="text-gray-500 text-sm">{stat.label}</div>
+    <section id="about" className="section section--gray">
+      <div className="container">
+        <div className="section__header">
+          <p className="section__label">About</p>
+          <h2 className="section__title">
+            I create digital experiences that <span>matter</span>
+          </h2>
+        </div>
+        
+        <div className="about__content">
+          <p className="about__text">
+            Full-stack developer passionate about building immersive web experiences. 
+            From 3D websites to real-time applications, I bring ideas to life with clean code and thoughtful design.
+          </p>
+          
+          <div className="about__stats">
+            <div className="stat">
+              <div className="stat__number">15+</div>
+              <div className="stat__label">Projects</div>
             </div>
-          ))}
+            <div className="stat">
+              <div className="stat__number">3+</div>
+              <div className="stat__label">Years</div>
+            </div>
+            <div className="stat">
+              <div className="stat__number">10+</div>
+              <div className="stat__label">Tech Stack</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -106,36 +136,36 @@ function Projects({ repos }: { repos: Repo[] }) {
   }))
 
   return (
-    <section id="projects" className="py-32 px-8">
-      <div className="max-w-5xl mx-auto">
-        <p className="text-sm text-gray-500 uppercase tracking-widest mb-4">Projects</p>
-        <h2 className="text-3xl md:text-4xl font-bold mb-12">Selected Work</h2>
+    <section id="projects" className="section">
+      <div className="container">
+        <div className="section__header">
+          <p className="section__label">Projects</p>
+          <h2 className="section__title">Selected Work</h2>
+        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="projects__grid">
           {reposWithHomepage.slice(0, 9).map((repo) => (
             <a
               key={repo.id}
               href={repo.homepage || repo.html_url}
               target="_blank"
-              className="group block"
+              rel="noopener noreferrer"
+              className="project-card"
             >
-              <div className="aspect-video bg-gray-100 rounded-xl mb-4 overflow-hidden">
+              <div className="project-card__preview">
                 {repo.homepage ? (
                   <iframe 
                     src={repo.homepage}
-                    className="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500"
                     title={repo.name}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    <span className="text-4xl">📁</span>
+                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#404040', fontSize: '2rem' }}>
+                    📁
                   </div>
                 )}
               </div>
-              <h3 className="font-semibold mb-1 group-hover:text-gray-600 transition-colors">
-                {repo.name}
-              </h3>
-              <p className="text-gray-500 text-sm line-clamp-2">
+              <h3 className="project-card__title">{repo.name}</h3>
+              <p className="project-card__desc">
                 {repo.description || 'No description'}
               </p>
             </a>
@@ -148,36 +178,37 @@ function Projects({ repos }: { repos: Repo[] }) {
 
 function Contact() {
   return (
-    <section id="contact" className="py-32 px-8 bg-gray-50">
-      <div className="max-w-xl mx-auto text-center">
-        <p className="text-sm text-gray-500 uppercase tracking-widest mb-4">Contact</p>
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Let's work together</h2>
-        <p className="text-gray-600 mb-8">
-          Have a project in mind? Get in touch.
-        </p>
-        
-        <div className="flex gap-4 justify-center mb-8">
-          {[
-            { name: 'GitHub', url: 'https://github.com/M-Destiny' },
-            { name: 'LinkedIn', url: 'https://linkedin.com/in/destinymehul' },
-          ].map((social) => (
-            <a
-              key={social.name}
-              href={social.url}
-              target="_blank"
-              className="px-5 py-2 border border-gray-300 rounded-full hover:border-black transition-colors text-sm"
-            >
-              {social.name}
+    <section id="contact" className="section section--gray">
+      <div className="container">
+        <div className="contact__content">
+          <div className="section__header">
+            <p className="section__label">Contact</p>
+            <h2 className="section__title">Let's work together</h2>
+          </div>
+          
+          <p className="contact__text">
+            Have a project in mind? Get in touch.
+          </p>
+          
+          <div className="contact__socials">
+            <a href="https://github.com/M-Destiny" target="_blank" className="contact__social">
+              GitHub
             </a>
-          ))}
+            <a href="https://linkedin.com/in/destinymehul" target="_blank" className="contact__social">
+              LinkedIn
+            </a>
+            <a href="mailto:mehulr2801@gmail.com" className="contact__social">
+              Email
+            </a>
+          </div>
+          
+          <a 
+            href="mailto:mehulr2801@gmail.com"
+            className="btn btn--primary"
+          >
+            Say Hello
+          </a>
         </div>
-        
-        <a 
-          href="mailto:mehulr2801@gmail.com"
-          className="inline-block px-10 py-4 bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-colors"
-        >
-          Say Hello
-        </a>
       </div>
     </section>
   )
@@ -185,10 +216,10 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="py-8 px-8 border-t border-gray-100">
-      <div className="max-w-5xl mx-auto flex justify-between items-center text-sm text-gray-500">
-        <p>© {new Date().getFullYear()} Mehul</p>
-        <p>Built with React</p>
+    <footer className="footer">
+      <div className="footer__content">
+        <p className="footer__text">© {new Date().getFullYear()} Mehul</p>
+        <p className="footer__text">Built with React</p>
       </div>
     </footer>
   )
@@ -206,7 +237,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className="bg-white text-black min-h-screen">
+    <div className="app">
       <Header />
       <Hero />
       <About />

@@ -30,17 +30,57 @@ function ParallaxBackground() {
 }
 
 function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const handleLinkClick = () => {
+    setMobileOpen(false)
+  }
+
   return (
-    <header className="header">
-      <a href="#home" className="header__logo">MEHUL</a>
-      <nav className="header__nav">
+    <>
+      <header className="header">
+        <a href="#home" className="header__logo">MEHUL</a>
+        <nav className="header__nav">
+          {['About', 'Projects', 'Contact'].map((item) => (
+            <a key={item} href={`#${item.toLowerCase()}`} className="header__link">
+              {item}
+            </a>
+          ))}
+        </nav>
+        <button 
+          className="header__mobile-toggle" 
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </header>
+      
+      {/* Mobile Menu */}
+      <div className={`header--mobile ${mobileOpen ? 'active' : ''}`}>
+        <button 
+          className="header__mobile-toggle" 
+          onClick={() => setMobileOpen(false)}
+          style={{ position: 'absolute', top: '1rem', right: '1.5rem' }}
+        >
+          <span style={{ transform: 'rotate(45deg)', position: 'absolute' }}></span>
+          <span style={{ opacity: 0 }}></span>
+          <span style={{ transform: 'rotate(-45deg)', position: 'absolute' }}></span>
+        </button>
         {['About', 'Projects', 'Contact'].map((item) => (
-          <a key={item} href={`#${item.toLowerCase()}`} className="header__link">
+          <a 
+            key={item} 
+            href={`#${item.toLowerCase()}`} 
+            className="header__link"
+            onClick={handleLinkClick}
+          >
             {item}
           </a>
         ))}
-      </nav>
-    </header>
+      </div>
+    </>
   )
 }
 

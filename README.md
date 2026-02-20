@@ -6,21 +6,22 @@ A premium 3D portfolio website showcasing my work as a Full Stack Developer.
 
 ## ✨ Features
 
-- **Immersive 3D Hero** - Animated floating shapes with post-processing
-- **Glass Morphism** - Modern frosted glass UI
-- **Smooth Animations** - Framer Motion
-- **Auto-fetched Projects** - GitHub API integration
-- **Fully Responsive**
+- **Interactive 3D Hero** - Floating wireframe shapes that follow mouse cursor
+- **Parallax Backgrounds** - Moving gradient circles on scroll
+- **Hover Effects** - 3D objects change color and scale on hover
+- **Minimal Dark Design** - Clean black background with pop colors
+- **Responsive** - Works on mobile and desktop
+- **GitHub Integration** - Auto-fetches projects from GitHub API
 
 ## 🛠️ Tech Stack
 
 - React + TypeScript + Vite
-- Three.js, React Three Fiber
+- Three.js + React Three Fiber
 - Framer Motion
-- Tailwind CSS
-- Vercel
+- Vanilla CSS (no frameworks)
+- Vercel (deployment)
 
-## � live Demo
+## 🔗 Live Demo
 
 **[3d-portfolio-ebon-rho.vercel.app](https://3d-portfolio-ebon-rho.vercel.app)**
 
@@ -28,15 +29,24 @@ A premium 3D portfolio website showcasing my work as a Full Stack Developer.
 
 ```
 src/
-├── components/3d/HeroScene.tsx  # 3D hero
-├── App.tsx                       # Main app
-└── index.css                    # Styles
+├── components/3d/HeroScene.tsx  # Interactive 3D hero
+├── App.tsx                       # Main app with all sections
+├── styles.css                    # Vanilla CSS styles
+└── index.css                    # Entry point
+```
+
+## 📦 Install & Run
+
+```bash
+npm install
+npm run dev      # Development
+npm run build    # Production build
+npm run preview  # Preview build
 ```
 
 ## 🌿 Branches
 
-- `main` - Production
-- `dev` - Development
+- `main` - Production (deployed to Vercel)
 
 ## 📝 License
 

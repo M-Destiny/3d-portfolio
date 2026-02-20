@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +13,6 @@ body {
   background: #000;
   color: #fff;
   overflow-x: hidden;
-  cursor: none;
 }
 
 ::selection {
@@ -32,12 +29,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #22d3ee, #ec4899);
+  background: linear-gradient(180deg, #22d3ee, #a855f7);
   border-radius: 3px;
-}
-
-a, button {
-  cursor: none;
 }
 
 .line-clamp-3 {
